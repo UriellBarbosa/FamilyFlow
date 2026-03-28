@@ -56,36 +56,37 @@
 
         <!-- Painel direito -->
         <div class="panel-right">
+            <!-- Card formulário -->
+            <div class="fom-card">
+                <!-- Formulário de login -->
+                <div class="form-header">
+                    <h2>Bem-vindo de volta</h2>
+                    <p>Entre com sua conta para continuar</p>
+                </div>
 
-            <!-- Formulário de login -->
-            <div class="form-header">
-                <h2>Bem-vindo de volta</h2>
-                <p>Entre com sua conta para continuar</p>
-            </div>
+                <div class="error-msg" id="errorMsg">
+                    E-mail ou senha incorretos. Tente novamente.
+                </div>
 
-            <div class="error-msg" id="errorMsg">
-                E-mail ou senha incorretos. Tente novamente.
-            </div>
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" autocomplete="email"/>
+                </div>
 
-            <div class="field">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" placeholder="seu@email.com" autocomplete="email"/>
-            </div>
+                <div class="field">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+                    <!-- link para recuperar a senha -->
+                    <div class="forgot"><a href="#">Esqueceu a senha?</a></div>
+                </div>
 
-            <div class="field">
-                <label for="password">Senha</label>
-                <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
-                <!-- link para recuperar a senha -->
-                <div class="forgot"><a href="#">Esqueceu a senha?</a></div>
-            </div>
+                <button id="btnLogin" type="button">Entrar</button>
 
-            <button id="btnLogin" type="button">Entrar</button>
-
-            <!-- Link para novo cadastro -->
-            <div class="register-link">
+                <!-- Link para novo cadastro -->
+                <div class="register-link">
                 Não tem conta? <a href="#">Cadastre-se grátis</a>
+                </div>
             </div>
-
         </div>
 
         <!-- Scripts -->
