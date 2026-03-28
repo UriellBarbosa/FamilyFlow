@@ -1,0 +1,66 @@
+/* -------------- RESET --------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* -------------------- VARIÁVEIS GLOBAIS ------------------ */
+:root {
+    --cream:        #faf6f0;
+    --sand:         #f0e8d8;
+    --terracotta:   #c9714a;
+    --terra-dark:   #a85a35;
+    --forest:       #2d4a3e;
+    --forest-light: #3d6254;
+    --text:         #1e2a24;
+    --muted:        #7a8c84;
+    --white:        #ffffff;
+    --error:        #d94f3d;
+}
+
+/* -------------------- BODY ----------------- */
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+/* -------------- PAINEL ESQUERDO ----------- */
+.panel-left {
+    width: 48%;
+    background: var(--forest);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem;
+    overflow: hidden;
+}
+
+/* -------------- PAINEL DIREITO ------------ */
+.panel-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2.5rem;
+}
+
+/* -------------- RESPONSIVO ------------ */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    .panel-left {
+        width: 100%;
+        padding: 2rem;
+    }
+
+    .panel-right {
+        padding: 2rem 1.5rem;
+    }
+}
