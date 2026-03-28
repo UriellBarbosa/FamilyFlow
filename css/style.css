@@ -30,7 +30,7 @@ body {
 
 /* -------------- PAINEL ESQUERDO ----------- */
 .panel-left {
-    width: 48%;
+    width: 35%;
     background: var(--forest);
     display: flex;
     flex-direction: column;
