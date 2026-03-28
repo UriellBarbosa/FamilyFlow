@@ -145,3 +145,131 @@ body {
     font-weight: 500;
     margin-top: .15rem;
 }
+
+/* ------------- CARD DO FORMULÁRIO ------------ */
+.form-card {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-header {
+    margin-bottom: 2.5rem;
+}
+
+.form-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--text);
+    margin-bottom: .4rem;
+}
+
+.form-header p {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+/* ------------ CAMPOS ------------- */
+.filed {
+    margin-bottom: 1.25rem;
+}
+
+.field label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--forest);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: .5rem;
+}
+
+.field input {
+    width: 100%;
+    padding: .85rem 1rem;
+    border: 1.5px solid #ddd6c8;
+    border-radius: 12px;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .95rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.field input:focus {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 3px rgba(201, 113, 74, .12);
+}
+
+/* -------------- LINK ESQUECEU A SENHA ----------- */
+.forgot {
+    text-align: right;
+    margin-top: .4rem;
+}
+
+.forgot a {
+    font-size: .8rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+}
+
+.forgot a:hover {
+    color: var(--terracotta);
+}
+
+/* ---------------- MENSAGEM DE ERRO ------------ */
+.error-msg {
+    background: #fdf0ee;
+    border: 1px solid #f5c4bb;
+    color: var(--error);
+    border-radius: 10px;
+    padding: .75rem 1rem;
+    font-size: .85rem;
+    margin-bottom: 1.25rem;
+    display: none;
+}
+
+.error-msg.show {
+    display: block;
+}
+
+/* -------------- BOTÃO ----------- */
+#btnLogin {
+    width: 100%;
+    padding: .95rem;
+    background: var(--forest);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s, box-shadow .2s;
+    margin-top: .5rem;
+}
+
+#btnLogin:hover {
+    background: var(--forest-light);
+    box-shadow: 0 6px 20px rgba(45, 74, 62, .25);
+}
+
+/* ----------------- LINK DE CADASTRO ------------- */
+.register-link {
+    text-align: center;
+    font-size: .85rem;
+    color: var(--muted);
+    margin-top: 1.5rem;
+}
+
+.register-link a {
+    color: var(--terracotta);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color .2s;
+}
+
+.register-link a:hover {
+    color: var(--terra-dark);
+}
