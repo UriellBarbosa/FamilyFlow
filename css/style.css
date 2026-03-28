@@ -64,3 +64,84 @@ body {
         padding: 2rem 1.5rem;
     }
 }
+
+/* ------------- MARCA ------------- */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--terracotta);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    font-size: 1.99rem;
+}
+
+.brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+}
+
+/* ------------ HERO (título e subtítulo) ------------ */
+.panel-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+}
+
+.panel-hero h1 em {
+    font-style: italic;
+    color: #e8a882;
+}
+
+.panel-hero p {
+    color: rgba(255, 255, 255, .65);
+    font-size: .95rem;
+    line-height: 1.7;
+    max-width: 320px;
+}
+
+/* ----------------- CARDS DE ESTATÍSTICAS ------------- */
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 14px;
+    padding: .9rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-icon {
+    font-size: 1.4rem;
+    min-width: 36px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: .75rem;
+    color: rgba(255, 255, 255, .5);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.stat-value {
+    font-size: 1rem;
+    color: var(--white);
+    font-weight: 500;
+    margin-top: .15rem;
+}
