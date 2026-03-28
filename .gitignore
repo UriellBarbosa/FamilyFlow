@@ -1,0 +1,12 @@
+# Variáveis de ambiente (credenciais do Supabase)
+.env
+
+# Configurações do editor
+.vscode/
+
+# Sistemas operacionais
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
