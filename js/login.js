@@ -1,3 +1,6 @@
+// ------- IMPORTAÇÃO DO SUPABASE -------
+import { supabase } from './supabase.js';
+
 // ------- SELEÇÃO DOS ELEMENTOS DA PÁGINA ---------
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
@@ -36,7 +39,25 @@ btnLogin.addEventListener('click', async () => {
     if (!isValid) return;
 
     // autenticação com o supabase
-    // ------- virá aqui -------
+    btnLogin.disabled = true;
+    btnLogin.textContent = 'Entrando...';
+
+    try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+        email: emailInput.value.trim(),
+        password: passwordInput.value
+    });
+
+    if (error) throw error;
+
+    window.location.href = 'dashboard.html';
+
+    } catch (error) {
+    showError('E-mail ou senha incorretos. Tente novamente.');
+    } finally {
+    btnLogin.disabled = false;
+    btnLogin.textContent = 'Entrar';
+}
 });
 
 // ------- EVENTO: TECLA ENTER ACIONA O LOGIN -------
