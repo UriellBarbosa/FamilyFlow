@@ -393,16 +393,13 @@ async function generateInviteLink() {
   if (familyError || !familyId) return;
 
   // ----------- Cria o convite no banco -----------
-  const { data: invite, error } = await supabase
-    .from('invites')
-    .insert({ family_id: familyId })
-    .select()
-    .single();
+  const { data: token, error } = await supabase
+    .rpc('create_invite');
 
-  if (error || !invite) return;
+  if (error || !token) return;
 
-  const link = `${window.location.origin}/register.html?invite=${invite.token}`;
-  document.getElementById('inviteLinkText').textContent = link;
+const link = `${window.location.origin}/register.html?invite=${token}`;
+document.getElementById('inviteLinkText').textContent = link;
 }
 
 // ----------------- Função: copiar link -----------------
@@ -433,8 +430,7 @@ document.getElementById('btnSendInvite').addEventListener('click', async () => {
     .rpc('get_my_family_id');
 
   const { error } = await supabase
-    .from('invites')
-    .insert({ family_id: familyId, email });
+    .rpc('create_invite', { p_email: email });
 
   if (error) {
     errorEl.textContent = 'Erro ao enviar convite. Tente novamente.';
