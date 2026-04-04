@@ -51,6 +51,7 @@ function goToStep(step) {
 // ── Eventos de navegação ──
 btnNext.addEventListener('click', () => {
   if (state.currentStep === 1 && !validateStep1()) return;
+  if (state.currentStep === 2 && !validateStep2()) return;
 
   if (state.currentStep < state.totalSteps) {
     goToStep(state.currentStep + 1);
@@ -209,3 +210,135 @@ function validateStep1() {
 
   return true;
 }
+
+// ══════════════════════════════════════
+// PASSO 2 — CATEGORIAS
+// ══════════════════════════════════════
+
+const suggestedCategories = document.getElementById('suggestedCategories');
+const selectedCategories  = document.getElementById('selectedCategories');
+const btnAddCategory      = document.getElementById('btnAddCategory');
+const customCategoryForm  = document.getElementById('customCategoryForm');
+const btnSaveCategory     = document.getElementById('btnSaveCategory');
+
+// ── Sugestões pré-definidas ──
+const suggestions = [
+  { name: 'Alimentação',    type: 'expense', color: '#e07b54', icon: '🛒' },
+  { name: 'Transporte',     type: 'expense', color: '#5b8dd9', icon: '🚗' },
+  { name: 'Saúde',          type: 'expense', color: '#4caf7d', icon: '🏥' },
+  { name: 'Educação',       type: 'expense', color: '#9b6dcc', icon: '📚' },
+  { name: 'Lazer',          type: 'expense', color: '#f0b429', icon: '🎉' },
+  { name: 'Moradia',        type: 'expense', color: '#e05c5c', icon: '🏠' },
+  { name: 'Vestuário',      type: 'expense', color: '#e8a0bf', icon: '👗' },
+  { name: 'Assinaturas',    type: 'expense', color: '#4db8b8', icon: '📱' },
+  { name: 'Salário',        type: 'income',  color: '#4caf7d', icon: '💼' },
+  { name: 'Renda extra',    type: 'income',  color: '#f0b429', icon: '💰' },
+];
+
+// ── Função: renderizar sugestões ──
+function renderSuggestions() {
+  suggestedCategories.innerHTML = '';
+
+  suggestions.forEach((cat, index) => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.classList.add('category-chip');
+    chip.dataset.index = index;
+    chip.innerHTML = `<span>${cat.icon}</span> ${cat.name}`;
+    chip.style.setProperty('--chip-color', cat.color);
+
+    chip.addEventListener('click', () => toggleSuggestion(index, chip, cat));
+    suggestedCategories.appendChild(chip);
+  });
+}
+
+// ── Função: selecionar/deselecionar sugestão ──
+function toggleSuggestion(index, chip, cat) {
+  const exists = state.categories.findIndex(c => c.name === cat.name);
+
+  if (exists >= 0) {
+    state.categories.splice(exists, 1);
+    chip.classList.remove('selected');
+  } else {
+    state.categories.push({ ...cat, custom: false });
+    chip.classList.add('selected');
+  }
+
+  renderSelectedCategories();
+}
+
+// ── Função: renderizar categorias selecionadas ──
+function renderSelectedCategories() {
+  selectedCategories.innerHTML = '';
+
+  state.categories.forEach((cat, index) => {
+    if (cat.custom) {
+      const tag = document.createElement('div');
+      tag.classList.add('category-chip', 'selected');
+      tag.innerHTML = `
+        <span style="color:${cat.color}">●</span>
+        ${cat.name}
+        <button class="btn-remove" data-index="${index}" type="button">✕</button>
+      `;
+      tag.querySelector('.btn-remove').addEventListener('click', () => {
+        state.categories.splice(index, 1);
+        renderSelectedCategories();
+      });
+      selectedCategories.appendChild(tag);
+    }
+  });
+}
+
+// ── Função: adicionar categoria personalizada ──
+function saveCustomCategory() {
+  const name  = document.getElementById('customCategoryName').value.trim();
+  const type  = document.getElementById('customCategoryType').value;
+  const color = document.getElementById('customCategoryColor').value;
+
+  if (!name) {
+    document.getElementById('errorStep2').textContent = 'Informe o nome da categoria.';
+    document.getElementById('errorStep2').classList.add('show');
+    return;
+  }
+
+  const exists = state.categories.findIndex(c => c.name.toLowerCase() === name.toLowerCase());
+  if (exists >= 0) {
+    document.getElementById('errorStep2').textContent = 'Essa categoria já foi adicionada.';
+    document.getElementById('errorStep2').classList.add('show');
+    return;
+  }
+
+  document.getElementById('errorStep2').classList.remove('show');
+  state.categories.push({ name, type, color, icon: '📌', custom: true });
+
+  // Limpa o formulário
+  document.getElementById('customCategoryName').value = '';
+  document.getElementById('customCategoryColor').value = '#2d4a3e';
+  customCategoryForm.classList.add('hidden');
+
+  renderSelectedCategories();
+}
+
+// ── Eventos ──
+btnAddCategory.addEventListener('click', () => {
+  customCategoryForm.classList.toggle('hidden');
+});
+
+btnSaveCategory.addEventListener('click', saveCustomCategory);
+
+// ── Validação do passo 2 ──
+function validateStep2() {
+  const errorEl = document.getElementById('errorStep2');
+  errorEl.classList.remove('show');
+
+  if (state.categories.length === 0) {
+    errorEl.textContent = 'Selecione ou crie ao menos uma categoria.';
+    errorEl.classList.add('show');
+    return false;
+  }
+
+  return true;
+}
+
+// ── Inicializa as sugestões ──
+renderSuggestions();
