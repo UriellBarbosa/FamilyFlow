@@ -28,18 +28,44 @@ function validateFields() {
   const password    = passwordInput.value;
   const confirmPass = confirmPassInput.value;
 
-  if (!fullName || !familyName || !email || !password || !confirmPass) {
-    showError('Preencha todos os campos para continuar.');
+  if (!fullName) {
+    showError('Preencha seu nome completo.');
+    fullNameInput.focus();
+    return false;
+  }
+
+  if (!familyName) {
+    showError('Preencha o nome da família.');
+    familyNameInput.focus();
+    return false;
+  }
+
+  if (!email) {
+    showError('Preencha seu e-mail.');
+    emailInput.focus();
+    return false;
+  }
+
+  if (!password) {
+    showError('Preencha sua senha.');
+    passwordInput.value = '';
+    confirmPassInput.value = '';
+    passwordInput.focus();
     return false;
   }
 
   if (password.length < 6) {
     showError('A senha deve ter no mínimo 6 caracteres.');
+    passwordInput.value = '';
+    confirmPassInput.value = '';
+    passwordInput.focus();
     return false;
   }
 
   if (password !== confirmPass) {
     showError('As senhas não coincidem.');
+    confirmPassInput.value = '';
+    confirmPassInput.focus();
     return false;
   }
 
@@ -102,15 +128,36 @@ async function register() {
   } catch (error) {
     console.error(error);
 
-    const errorMessages = {
-      'email rate limit exceeded': 'Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.',
-      'User already registered': 'Este e-mail já está cadastrado. Tente fazer login.',
-      'Password should be at least 6 characters': 'A senha deve ter no mínimo 6 caracteres.',
-      'Unable to validate email address: invalid format': 'O e-mail informado não é válido.',
+    const errorMap = {
+      'email rate limit exceeded': {
+        message: 'Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.',
+        field: null
+      },
+      'User already registered': {
+        message: 'Este e-mail já está cadastrado. Tente fazer login.',
+        field: emailInput
+      },
+      'Password should be at least 6 characters': {
+        message: 'A senha deve ter no mínimo 6 caracteres.',
+        field: passwordInput
+      },
+      'Unable to validate email address: invalid format': {
+        message: 'O e-mail informado não é válido.',
+        field: emailInput
+      },
     };
 
-    const message = errorMessages[error.message] || 'Erro ao criar conta. Tente novamente.';
-    showError(message);
+    const mapped = errorMap[error.message];
+
+    if (mapped) {
+      showError(mapped.message);
+      if (mapped.field) {
+        mapped.field.value = '';
+        mapped.field.focus();
+      }
+    } else {
+      showError('Erro ao criar conta. Tente novamente.');
+    }
   } finally {
     btnRegister.disabled = false;
     btnRegister.textContent = 'Criar conta';
