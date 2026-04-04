@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FamilyFlow — Cadastro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="panel-left">
+
+    <div class="brand">
+      <div class="brand-icon">🏡</div>
+      <span class="brand-name">FamilyFlow</span>
+    </div>
+
+    <div class="panel-hero">
+      <h1>Comece sua <em>jornada.</em></h1>
+      <p>Crie sua conta, configure sua família e tenha o controle financeiro que vocês merecem.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <span class="stat-icon">🆓</span>
+        <div>
+          <div class="stat-label">Teste grátis</div>
+          <div class="stat-value">14 dias sem cobrar nada</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">👨‍👩‍👧‍👦</span>
+        <div>
+          <div class="stat-label">Família completa</div>
+          <div class="stat-value">Até 5 integrantes</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">⚙️</span>
+        <div>
+          <div class="stat-label">Do seu jeito</div>
+          <div class="stat-value">Categorias personalizadas</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel-right">
+
+    <div class="form-card">
+
+      <div class="form-header">
+        <h2>Criar conta</h2>
+        <p>Preencha os dados abaixo para começar</p>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <div class="field">
+        <label for="fullName">Nome completo</label>
+        <input type="text" id="fullName" placeholder="Seu nome completo" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="familyName">Nome da família</label>
+        <input type="text" id="familyName" placeholder="Ex: Família Silva" />
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirmar senha</label>
+        <input type="password" id="confirmPassword" placeholder="Repita a senha" autocomplete="new-password" />
+      </div>
+
+      <button id="btnRegister" type="button">Criar conta</button>
+
+      <div class="register-link">
+        Já tem conta? <a href="index.html">Fazer login</a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="js/register.js"></script>
+</body>
+</html>
