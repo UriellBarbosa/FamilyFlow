@@ -421,6 +421,7 @@ body {
   display: flex;
   gap: .75rem;
   margin-top: .5rem;
+  margin-bottom: 1.25rem;
 }
 
 .option-btn {
@@ -449,6 +450,7 @@ body {
   gap: .75rem;
   align-items: center;
   margin-bottom: .75rem;
+  margin-top: .25rem;
 }
 
 .income-item input {
