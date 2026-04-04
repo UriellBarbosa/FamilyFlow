@@ -235,7 +235,7 @@ body {
 }
 
 /* -------------- BOTÃO ----------- */
-#btnLogin {
+.btn-primary {
     width: 100%;
     padding: .95rem;
     background: var(--forest);
@@ -272,4 +272,11 @@ body {
 
 .register-link a:hover {
     color: var(--terra-dark);
+}
+
+/* ---------------- PÁGINA DE CADASTRO ---------------- */
+
+/* painel direito com scroll se necessário */
+.panel-right {
+    overflow-y: auto;
 }
