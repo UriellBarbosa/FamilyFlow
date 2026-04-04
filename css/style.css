@@ -328,7 +328,7 @@ body {
 
 /* ----------------- WRAPPER ----------- */
 .onboarding-wrapper {
-  max-width: 620px;
+  max-width: 780px;
   margin: 0 auto;
   padding: 2rem 1.5rem 6rem;
   min-height: 100vh;
@@ -537,7 +537,7 @@ body {
 /* ----------------- CATEGORIAS ----------- */
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
   gap: .75rem;
   margin-bottom: 1rem;
 }
@@ -555,6 +555,8 @@ body {
   display: flex;
   align-items: center;
   gap: .5rem;
+  white-space: nowrap;
+  height: 42px;
 }
 
 .category-chip.selected {
@@ -771,7 +773,7 @@ body {
   background: var(--white);
   border-top: 1px solid #ede8e0;
   padding: 1rem 2rem;
-  max-width: 620px;
+  max-width: 780px;
   margin: 0 auto;
 }
 
@@ -816,4 +818,10 @@ body {
   border-radius: 99px;
   margin-left: .25rem;
   color: inherit;
+}
+
+/* ── GARANTE QUE PASSOS OCULTOS NÃO VAZAM CONTEÚDO ── */
+.step.hidden {
+  display: none !important;
+  visibility: hidden !important;
 }

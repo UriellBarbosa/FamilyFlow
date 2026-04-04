@@ -274,7 +274,9 @@ function toggleSuggestion(index, chip, cat) {
 
 // ── Função: renderizar categorias selecionadas ──
 function renderSelectedCategories() {
-  selectedCategories.innerHTML = '';
+  const container = document.querySelector('#step2 #selectedCategories');
+  if (!container) return;
+  container.innerHTML = '';
 
   state.categories.forEach((cat, index) => {
     if (cat.custom) {
@@ -289,7 +291,7 @@ function renderSelectedCategories() {
         state.categories.splice(index, 1);
         renderSelectedCategories();
       });
-      selectedCategories.appendChild(tag);
+      container.appendChild(tag);
     }
   });
 }

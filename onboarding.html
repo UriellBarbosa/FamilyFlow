@@ -66,34 +66,33 @@
       <div class="step hidden" id="step2">
         <div class="step-header">
           <span class="step-icon">🗂️</span>
-          <h2>Categorias de gastos</h2>
-          <p>Selecione as categorias que fazem sentido para sua família ou crie as suas.</p>
+            <h2>Categorias de gastos</h2>
+            <p>Selecione as categorias que fazem sentido para sua família ou crie as suas.</p>
         </div>
 
         <div class="categories-grid" id="suggestedCategories"></div>
 
         <button class="btn-secondary" id="btnAddCategory" type="button">+ Criar categoria personalizada</button>
 
-          <div id="customCategoryForm" class="hidden">
-            <div class="custom-category-inputs">
-              <input type="text" id="customCategoryName" placeholder="Nome da categoria" />
-                <select id="customCategoryType">
-                  <option value="expense">Saída</option>
-                  <option value="income">Entrada</option>
-                </select>
-                <select id="customCategoryNature">
-                  <option value="variable">Variável</option>
-                  <option value="fixed">Fixa</option>
-                </select>
-              <input type="color" id="customCategoryColor" value="#2d4a3e" />
-                <button class="btn-secondary" id="btnSaveCategory" type="button">Adicionar</button>
-                <button class="btn-cancel-category" id="btnCancelCategory" type="button">✕</button>
-            </div>
+        <div id="customCategoryForm" class="hidden">
+          <div class="custom-category-inputs">
+            <input type="text" id="customCategoryName" placeholder="Nome da categoria" />
+              <select id="customCategoryType">
+                <option value="expense">Saída</option>
+                <option value="income">Entrada</option>
+              </select>
+              <select id="customCategoryNature">
+                <option value="variable">Variável</option>
+                <option value="fixed">Fixa</option>
+              </select>
+            <input type="color" id="customCategoryColor" value="#2d4a3e" />
+            <button class="btn-secondary" id="btnSaveCategory" type="button">Adicionar</button>
+            <button class="btn-cancel-category" id="btnCancelCategory" type="button">✕</button>
           </div>
         </div>
 
-        <div class="selected-categories" id="selectedCategories"></div>
-        <div class="error-msg" id="errorStep2"></div>
+          <div class="selected-categories" id="selectedCategories"></div>
+          <div class="error-msg" id="errorStep2"></div>
       </div>
 
       <!-- PASSO 3 — Integrantes -->
