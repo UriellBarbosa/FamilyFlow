@@ -779,3 +779,24 @@ body {
 .hidden {
   display: none !important;
 }
+
+/* ── BOTÃO CANCELAR CATEGORIA ── */
+.btn-cancel-category {
+  background: none;
+  border: 1.5px solid var(--error);
+  color: var(--error);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cancel-category:hover {
+  background: var(--error);
+  color: var(--white);
+}

@@ -321,7 +321,15 @@ function saveCustomCategory() {
 
 // ── Eventos ──
 btnAddCategory.addEventListener('click', () => {
-  customCategoryForm.classList.toggle('hidden');
+  customCategoryForm.classList.remove('hidden');
+  document.getElementById('customCategoryName').focus();
+});
+
+document.getElementById('btnCancelCategory').addEventListener('click', () => {
+  customCategoryForm.classList.add('hidden');
+  document.getElementById('customCategoryName').value = '';
+  document.getElementById('customCategoryColor').value = '#2d4a3e';
+  document.getElementById('errorStep2').classList.remove('show');
 });
 
 btnSaveCategory.addEventListener('click', saveCustomCategory);
