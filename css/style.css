@@ -568,7 +568,7 @@ body {
 .custom-category-inputs {
   display: flex;
   gap: .75rem;
-  align-items: center;
+  align-items: stretch;
   margin-top: 1rem;
   flex-wrap: wrap;
 }
@@ -799,4 +799,11 @@ body {
 .btn-cancel-category:hover {
   background: var(--error);
   color: var(--white);
+}
+
+/* ── BOTÕES DO FORMULÁRIO DE CATEGORIA ── */
+.custom-category-inputs .btn-secondary {
+  margin-top: 0;
+  height: auto;
+  align-self: stretch;
 }
