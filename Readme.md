@@ -98,16 +98,18 @@ FASE 1 — MVP
 [✅] Scaffolding (estrutura de pastas e arquivos)
 [✅] Tela de login (HTML + CSS)
 [✅] Lógica de validação de campos (login.js)
-[ ] Configuração do Supabase (banco + auth)
-[ ] Modelagem do banco de dados
-[ ] Autenticação real com Supabase Auth
-[ ] Tela de cadastro (dados pessoais + família)
-[ ] Onboarding — Passo 1: Renda familiar
-[ ] Onboarding — Passo 2: Categorias (sugestões + personalizadas)
-[ ] Onboarding — Passo 3: Integrantes (link, e-mail ou manual)
-[ ] Onboarding — Passo 4: Tudo pronto 🎉
-[ ] Categorias dinâmicas por família
-[ ] Cadastro de transações
+[✅] Configuração do Supabase (banco + auth)
+[✅] Modelagem do banco de dados
+[✅] Autenticação real com Supabase Auth
+[✅] Tela de cadastro (dados pessoais + família)
+[✅] Onboarding — Passo 1: Renda familiar
+[✅] Onboarding — Passo 2: Categorias (sugestões + personalizadas)
+[✅] Onboarding — Passo 3: Integrantes (link, e-mail ou manual)
+[] Onboarding — Passo 4: Tudo pronto 🎉
+[] Categorias dinâmicas por família
+[] Cadastro de transações
+[] Gestão de integrantes (promover membro a admin / rebaixar admin a membro)
+[] Regra: família deve ter sempre ao menos um admin
 
 FASE 2 — DASHBOARD
 [ ] Layout do dashboard
