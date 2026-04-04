@@ -52,6 +52,7 @@ function goToStep(step) {
 btnNext.addEventListener('click', () => {
   if (state.currentStep === 1 && !validateStep1()) return;
   if (state.currentStep === 2 && !validateStep2()) return;
+  if (state.currentStep === 3 && !validateStep3()) return;
 
   if (state.currentStep < state.totalSteps) {
     goToStep(state.currentStep + 1);
@@ -221,7 +222,7 @@ const btnAddCategory      = document.getElementById('btnAddCategory');
 const customCategoryForm  = document.getElementById('customCategoryForm');
 const btnSaveCategory     = document.getElementById('btnSaveCategory');
 
-// ── Sugestões pré-definidas ──
+// ---------------- Sugestões pré-definidas ----------------
 const suggestions = [
   { name: 'Alimentação', type: 'expense', nature: 'variable', color: '#e07b54', icon: '🛒' },
   { name: 'Transporte',  type: 'expense', nature: 'variable', color: '#5b8dd9', icon: '🚗' },
@@ -235,7 +236,7 @@ const suggestions = [
   { name: 'Renda extra', type: 'income',  nature: 'variable', color: '#f0b429', icon: '💰' },
 ];
 
-// ── Função: renderizar sugestões ──
+// -------------- Função: renderizar sugestões ----------------
 function renderSuggestions() {
   suggestedCategories.innerHTML = '';
 
@@ -257,7 +258,7 @@ function renderSuggestions() {
   });
 }
 
-// ── Função: selecionar/deselecionar sugestão ──
+// ---------------- Função: selecionar/deselecionar sugestão ----------------
 function toggleSuggestion(index, chip, cat) {
   const exists = state.categories.findIndex(c => c.name === cat.name);
 
@@ -272,7 +273,7 @@ function toggleSuggestion(index, chip, cat) {
   renderSelectedCategories();
 }
 
-// ── Função: renderizar categorias selecionadas ──
+// ---------------- Função: renderizar categorias selecionadas ----------------
 function renderSelectedCategories() {
   const container = document.querySelector('#step2 #selectedCategories');
   if (!container) return;
@@ -296,7 +297,7 @@ function renderSelectedCategories() {
   });
 }
 
-// ── Função: adicionar categoria personalizada ──
+// ----------------- Função: adicionar categoria personalizada -----------------
 function saveCustomCategory() {
   const name   = document.getElementById('customCategoryName').value.trim();
   const type   = document.getElementById('customCategoryType').value;
@@ -319,7 +320,7 @@ function saveCustomCategory() {
   document.getElementById('errorStep2').classList.remove('show');
   state.categories.push({ name, type, nature, color, icon: '📌', custom: true });
 
-  // Limpa o formulário
+  // ----------- Limpa o formulário ---------------
   document.getElementById('customCategoryName').value = '';
   document.getElementById('customCategoryColor').value = '#2d4a3e';
   customCategoryForm.classList.add('hidden');
@@ -327,7 +328,7 @@ function saveCustomCategory() {
   renderSelectedCategories();
 }
 
-// ── Eventos ──
+// ------------------- Eventos ------------------
 btnAddCategory.addEventListener('click', () => {
   customCategoryForm.classList.remove('hidden');
   document.getElementById('customCategoryName').focus();
@@ -342,7 +343,7 @@ document.getElementById('btnCancelCategory').addEventListener('click', () => {
 
 btnSaveCategory.addEventListener('click', saveCustomCategory);
 
-// ── Validação do passo 2 ──
+// ----------------- Validação do passo 2 -----------------
 function validateStep2() {
   const errorEl = document.getElementById('errorStep2');
   errorEl.classList.remove('show');
@@ -356,5 +357,169 @@ function validateStep2() {
   return true;
 }
 
-// ── Inicializa as sugestões ──
+// ----------------- Inicializa as sugestões -----------------
 renderSuggestions();
+
+// ══════════════════════════════════════
+// PASSO 3 — INTEGRANTES
+// ══════════════════════════════════════
+
+const optInviteLink   = document.getElementById('optInviteLink');
+const optInviteEmail  = document.getElementById('optInviteEmail');
+const optInviteManual = document.getElementById('optInviteManual');
+const inviteLinkForm  = document.getElementById('inviteLinkForm');
+const inviteEmailForm = document.getElementById('inviteEmailForm');
+const inviteManualForm = document.getElementById('inviteManualForm');
+const membersList     = document.getElementById('membersList');
+
+// ----------------- Função: esconder todos os formulários de convite -----------------
+function hideAllInviteForms() {
+  inviteLinkForm.classList.add('hidden');
+  inviteEmailForm.classList.add('hidden');
+  inviteManualForm.classList.add('hidden');
+  optInviteLink.classList.remove('active');
+  optInviteEmail.classList.remove('active');
+  optInviteManual.classList.remove('active');
+}
+
+// ----------------- Função: gerar link de convite -----------------
+async function generateInviteLink() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return;
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('family_id')
+    .eq('id', session.user.id)
+    .single();
+
+  if (!profile) return;
+
+  // ----------- Cria o convite no banco -----------
+  const { data: invite, error } = await supabase
+    .from('invites')
+    .insert({ family_id: profile.family_id })
+    .select()
+    .single();
+
+  if (error || !invite) return;
+
+  const link = `${window.location.origin}/register.html?invite=${invite.token}`;
+  document.getElementById('inviteLinkText').textContent = link;
+}
+
+// ----------------- Função: copiar link -----------------
+document.getElementById('btnCopyLink').addEventListener('click', () => {
+  const link = document.getElementById('inviteLinkText').textContent;
+  navigator.clipboard.writeText(link);
+  document.getElementById('btnCopyLink').textContent = 'Copiado!';
+  setTimeout(() => {
+    document.getElementById('btnCopyLink').textContent = 'Copiar';
+  }, 2000);
+});
+
+// ----------------- Função: enviar convite por e-mail -----------------
+document.getElementById('btnSendInvite').addEventListener('click', async () => {
+  const email = document.getElementById('inviteEmail').value.trim();
+  const errorEl = document.getElementById('errorStep3');
+
+  if (!email) {
+    errorEl.textContent = 'Informe o e-mail do integrante.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  errorEl.classList.remove('show');
+
+  const { data: { session } } = await supabase.auth.getSession();
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('family_id')
+    .eq('id', session.user.id)
+    .single();
+
+  const { error } = await supabase
+    .from('invites')
+    .insert({ family_id: profile.family_id, email });
+
+  if (error) {
+    errorEl.textContent = 'Erro ao enviar convite. Tente novamente.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  state.members.push({ email, method: 'email' });
+  document.getElementById('inviteEmail').value = '';
+  renderMembersList();
+});
+
+// ----------------- Função: cadastrar manualmente -----------------
+document.getElementById('btnSaveManual').addEventListener('click', () => {
+  const name  = document.getElementById('manualName').value.trim();
+  const email = document.getElementById('manualEmail').value.trim();
+  const errorEl = document.getElementById('errorStep3');
+
+  if (!name || !email) {
+    errorEl.textContent = 'Preencha nome e e-mail do integrante.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  errorEl.classList.remove('show');
+  state.members.push({ name, email, method: 'manual' });
+  document.getElementById('manualName').value = '';
+  document.getElementById('manualEmail').value = '';
+  renderMembersList();
+});
+
+// ----------------- Função: renderizar lista de membros -----------------
+function renderMembersList() {
+  membersList.innerHTML = '';
+
+  state.members.forEach((member, index) => {
+    const initials = member.name
+      ? member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+      : '?';
+
+    const item = document.createElement('div');
+    item.classList.add('member-item');
+    item.innerHTML = `
+      <div class="member-avatar">${initials}</div>
+      <div style="flex:1">
+        <div class="member-name">${member.name || '—'}</div>
+        <div class="member-email">${member.email}</div>
+      </div>
+      <button class="btn-remove" data-index="${index}" type="button">✕</button>
+    `;
+    item.querySelector('.btn-remove').addEventListener('click', () => {
+      state.members.splice(index, 1);
+      renderMembersList();
+    });
+    membersList.appendChild(item);
+  });
+}
+
+// ----------------- Eventos das opções de convite -----------------
+optInviteLink.addEventListener('click', () => {
+  hideAllInviteForms();
+  optInviteLink.classList.add('active');
+  inviteLinkForm.classList.remove('hidden');
+  generateInviteLink();
+});
+
+optInviteEmail.addEventListener('click', () => {
+  hideAllInviteForms();
+  optInviteEmail.classList.add('active');
+  inviteEmailForm.classList.remove('hidden');
+});
+
+optInviteManual.addEventListener('click', () => {
+  hideAllInviteForms();
+  optInviteManual.classList.add('active');
+  inviteManualForm.classList.remove('hidden');
+});
+
+// ----------------- Validação do passo 3 (opcional — pode pular) -----------------
+function validateStep3() {
+  return true;
+}
