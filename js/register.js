@@ -90,6 +90,13 @@ async function register() {
 
     if (authError) throw authError;
 
+    if (!authData.user) {
+  showError('Confirme seu e-mail antes de continuar.');
+  btnRegister.disabled = false;
+  btnRegister.textContent = 'Criar conta';
+  return;
+}
+
     const userId = authData.user.id;
 
     // 2. Cria família, perfil e assinatura via função segura
@@ -103,7 +110,7 @@ const { data: familyId, error: setupError } = await supabase
 if (setupError) throw setupError;
 
     // 5. Redireciona para o onboarding
-    window.location.href = 'onboarding.html';
+    window.location.href = 'onboarding.html'; // onboarding_step começa em 0 — será atualizado a cada passo concluído
 
   } catch (error) {
     console.error(error);
