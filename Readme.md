@@ -74,6 +74,7 @@ familyflow/
 ├── transactions.html     ← Listagem de transações
 ├── categories.html       ← Gerenciar categorias
 ├── family.html           ← Gerenciar integrantes
+├── onboarding.html       ← Configuração inicial da família
 ├── subscription.html     ← Assinatura e pagamento
 ├── css/
 │   └── style.css         ← Estilos globais
@@ -83,7 +84,8 @@ familyflow/
     ├── dashboard.js      ← Lógica do dashboard
     ├── transactions.js   ← Lógica das transações
     ├── categories.js     ← Lógica das categorias
-    └── family.js         ← Lógica da gestão familiar
+    ├── family.js         ← Lógica da gestão familiar
+    └── onboarding.js     ← Lógica do fluxo de onboarding
 ```
 
 ---
@@ -99,8 +101,11 @@ FASE 1 — MVP
 [ ] Configuração do Supabase (banco + auth)
 [ ] Modelagem do banco de dados
 [ ] Autenticação real com Supabase Auth
-[ ] Cadastro de família e integrantes
-[ ] Sistema de convites por link
+[ ] Tela de cadastro (dados pessoais + família)
+[ ] Onboarding — Passo 1: Renda familiar
+[ ] Onboarding — Passo 2: Categorias (sugestões + personalizadas)
+[ ] Onboarding — Passo 3: Integrantes (link, e-mail ou manual)
+[ ] Onboarding — Passo 4: Tudo pronto 🎉
 [ ] Categorias dinâmicas por família
 [ ] Cadastro de transações
 
