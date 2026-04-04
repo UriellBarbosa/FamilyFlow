@@ -791,7 +791,7 @@ body {
   display: none !important;
 }
 
-/* ── BOTÃO CANCELAR CATEGORIA ── */
+/* -------------- BOTÃO CANCELAR CATEGORIA ----------- */
 .btn-cancel-category {
   background: none;
   border: 1.5px solid var(--error);
@@ -812,14 +812,14 @@ body {
   color: var(--white);
 }
 
-/* ── BOTÕES DO FORMULÁRIO DE CATEGORIA ── */
+/* -------------- BOTÕES DO FORMULÁRIO DE CATEGORIA ----------- */
 .custom-category-inputs .btn-secondary {
   margin-top: 0;
   height: auto;
   align-self: stretch;
 }
 
-/* ── NATUREZA DA CATEGORIA NO CHIP ── */
+/* ------------ NATUREZA DA CATEGORIA NO CHIP ------------- */
 .category-chip small {
   font-size: .7rem;
   background: rgba(0,0,0,.06);
@@ -829,8 +829,30 @@ body {
   color: inherit;
 }
 
-/* ── GARANTE QUE PASSOS OCULTOS NÃO VAZAM CONTEÚDO ── */
+/* -------------- GARANTE QUE PASSOS OCULTOS NÃO VAZAM CONTEÚDO ----------- */
 .step.hidden {
   display: none !important;
   visibility: hidden !important;
+}
+
+/* -------------- CHECKBOX (ADICIONAR INTEGRANTE) ----------- */
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: 1rem;
+  margin-top: .75rem;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--forest);
+  cursor: pointer;
+}
+
+.checkbox-field label {
+  font-size: .9rem;
+  color: var(--text);
+  cursor: pointer;
 }

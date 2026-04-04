@@ -142,6 +142,10 @@
         <!-- Convite por e-mail -->
         <div id="inviteEmailForm" class="hidden invite-form">
           <div class="field">
+            <label for="inviteEmailName">Nome do integrante</label>
+            <input type="text" id="inviteEmailName" placeholder="Nome completo" />
+          </div>
+          <div class="field">
             <label for="inviteEmail">E-mail do integrante</label>
             <input type="email" id="inviteEmail" placeholder="email@exemplo.com" />
           </div>
@@ -158,12 +162,12 @@
             <label for="manualEmail">E-mail</label>
             <input type="email" id="manualEmail" placeholder="email@exemplo.com" />
           </div>
+          <div class="checkbox-field">
+            <input type="checkbox" id="manualIsAdmin" />
+            <label for="manualIsAdmin">Adicionar como administrador</label>
+          </div>
           <button class="btn-secondary" id="btnSaveManual" type="button">Adicionar integrante</button>
         </div>
-
-        <div class="members-list" id="membersList"></div>
-        <div class="error-msg" id="errorStep3"></div>
-      </div>
 
       <!-- PASSO 4 — Tudo pronto -->
       <div class="step hidden" id="step4">

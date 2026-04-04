@@ -414,14 +414,15 @@ document.getElementById('btnCopyLink').addEventListener('click', () => {
 
 // ----------------- Função: enviar convite por e-mail -----------------
 document.getElementById('btnSendInvite').addEventListener('click', async () => {
-  const email = document.getElementById('inviteEmail').value.trim();
-  const errorEl = document.getElementById('errorStep3');
+const name    = document.getElementById('inviteEmailName').value.trim();
+const email   = document.getElementById('inviteEmail').value.trim();
+const errorEl = document.getElementById('errorStep3');
 
-  if (!email) {
-    errorEl.textContent = 'Informe o e-mail do integrante.';
-    errorEl.classList.add('show');
-    return;
-  }
+if (!name || !email) {
+  errorEl.textContent = 'Preencha nome e e-mail do integrante.';
+  errorEl.classList.add('show');
+  return;
+}
 
   errorEl.classList.remove('show');
 
@@ -438,28 +439,31 @@ document.getElementById('btnSendInvite').addEventListener('click', async () => {
     return;
   }
 
-  state.members.push({ email, method: 'email' });
-  document.getElementById('inviteEmail').value = '';
+state.members.push({ name, email, method: 'email' });
+document.getElementById('inviteEmailName').value = '';
+document.getElementById('inviteEmail').value = '';
   renderMembersList();
 });
 
 // ----------------- Função: cadastrar manualmente -----------------
 document.getElementById('btnSaveManual').addEventListener('click', () => {
-  const name  = document.getElementById('manualName').value.trim();
-  const email = document.getElementById('manualEmail').value.trim();
-  const errorEl = document.getElementById('errorStep3');
+  const name    = document.getElementById('manualName').value.trim();
+const email   = document.getElementById('manualEmail').value.trim();
+const isAdmin = document.getElementById('manualIsAdmin').checked;
+const errorEl = document.getElementById('errorStep3');
 
-  if (!name || !email) {
-    errorEl.textContent = 'Preencha nome e e-mail do integrante.';
-    errorEl.classList.add('show');
-    return;
-  }
+if (!name || !email) {
+  errorEl.textContent = 'Preencha nome e e-mail do integrante.';
+  errorEl.classList.add('show');
+  return;
+}
 
-  errorEl.classList.remove('show');
-  state.members.push({ name, email, method: 'manual' });
-  document.getElementById('manualName').value = '';
-  document.getElementById('manualEmail').value = '';
-  renderMembersList();
+errorEl.classList.remove('show');
+state.members.push({ name, email, role: isAdmin ? 'admin' : 'member', method: 'manual' });
+document.getElementById('manualName').value = '';
+document.getElementById('manualEmail').value = '';
+document.getElementById('manualIsAdmin').checked = false;
+renderMembersList();
 });
 
 // ----------------- Função: renderizar lista de membros -----------------
@@ -473,12 +477,13 @@ function renderMembersList() {
 
     const item = document.createElement('div');
     item.classList.add('member-item');
+    const roleLabel = member.role === 'admin' ? '👑 Admin' : '👤 Membro';
     item.innerHTML = `
       <div class="member-avatar">${initials}</div>
-      <div style="flex:1">
-        <div class="member-name">${member.name || '—'}</div>
-        <div class="member-email">${member.email}</div>
-      </div>
+        <div style="flex:1">
+          <div class="member-name">${member.name || '—'}</div>
+          <div class="member-email">${member.email} · ${roleLabel}</div>
+        </div>
       <button class="btn-remove" data-index="${index}" type="button">✕</button>
     `;
     item.querySelector('.btn-remove').addEventListener('click', () => {
