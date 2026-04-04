@@ -92,35 +92,15 @@ async function register() {
 
     const userId = authData.user.id;
 
-    // 2. Cria a família
-    const { data: familyData, error: familyError } = await supabase
-      .from('families')
-      .insert({ name: familyNameInput.value.trim() })
-      .select()
-      .single();
+    // 2. Cria família, perfil e assinatura via função segura
+const { data: familyId, error: setupError } = await supabase
+  .rpc('create_family_setup', {
+    p_user_id:     userId,
+    p_full_name:   fullNameInput.value.trim(),
+    p_family_name: familyNameInput.value.trim()
+  });
 
-    if (familyError) throw familyError;
-
-    const familyId = familyData.id;
-
-    // 3. Cria o perfil do usuário como admin
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert({
-        id: userId,
-        family_id: familyId,
-        full_name: fullNameInput.value.trim(),
-        role: 'admin'
-      });
-
-    if (profileError) throw profileError;
-
-    // 4. Cria a assinatura em período de teste
-    const { error: subError } = await supabase
-      .from('subscriptions')
-      .insert({ family_id: familyId });
-
-    if (subError) throw subError;
+if (setupError) throw setupError;
 
     // 5. Redireciona para o onboarding
     window.location.href = 'onboarding.html';
