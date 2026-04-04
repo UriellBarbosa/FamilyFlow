@@ -100,8 +100,17 @@ async function register() {
     window.location.href = 'onboarding.html';
 
   } catch (error) {
-    showError('Erro ao criar conta. Tente novamente.');
     console.error(error);
+
+    const errorMessages = {
+      'email rate limit exceeded': 'Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.',
+      'User already registered': 'Este e-mail já está cadastrado. Tente fazer login.',
+      'Password should be at least 6 characters': 'A senha deve ter no mínimo 6 caracteres.',
+      'Unable to validate email address: invalid format': 'O e-mail informado não é válido.',
+    };
+
+    const message = errorMessages[error.message] || 'Erro ao criar conta. Tente novamente.';
+    showError(message);
   } finally {
     btnRegister.disabled = false;
     btnRegister.textContent = 'Criar conta';
