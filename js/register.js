@@ -54,13 +54,13 @@ function validateFields() {
     return false;
   }
 
-  if (password.length < 6) {
-    showError('A senha deve ter no mínimo 6 caracteres.');
-    passwordInput.value = '';
-    confirmPassInput.value = '';
-    passwordInput.focus();
-    return false;
-  }
+  if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+  showError('A senha não atende aos requisitos mínimos de segurança.');
+  passwordInput.value = '';
+  confirmPassInput.value = '';
+  passwordInput.focus();
+  return false;
+}
 
   if (password !== confirmPass) {
     showError('As senhas não coincidem.');
@@ -170,4 +170,18 @@ btnRegister.addEventListener('click', register);
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') btnRegister.click();
 
+// ── Validação visual das regras de senha em tempo real ──
+const ruleLength  = document.getElementById('rule-length');
+const ruleUpper   = document.getElementById('rule-upper');
+const ruleLower   = document.getElementById('rule-lower');
+const ruleSpecial = document.getElementById('rule-special');
+
+passwordInput.addEventListener('input', () => {
+  const value = passwordInput.value;
+
+  ruleLength.classList.toggle('valid', value.length >= 8);
+  ruleUpper.classList.toggle('valid', /[A-Z]/.test(value));
+  ruleLower.classList.toggle('valid', /[a-z]/.test(value));
+  ruleSpecial.classList.toggle('valid', /[!@#$%^&*(),.?":{}|<>]/.test(value));
+    });
 });

@@ -280,3 +280,35 @@ body {
 .panel-right {
     overflow-y: auto;
 }
+
+/* ----------------- REGRAS DE SENHA ------------ */
+.password-rules {
+  list-style: none;
+  margin-top: .6rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.password-rules li {
+  font-size: .78rem;
+  color: var(--muted);
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.password-rules li::before {
+  content: '✗';
+  position: absolute;
+  left: 0;
+  color: var(--error);
+}
+
+.password-rules li.valid {
+  color: var(--forest);
+}
+
+.password-rules li.valid::before {
+  content: '✓';
+  color: var(--forest);
+}
