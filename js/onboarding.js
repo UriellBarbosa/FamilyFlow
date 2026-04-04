@@ -223,16 +223,16 @@ const btnSaveCategory     = document.getElementById('btnSaveCategory');
 
 // ── Sugestões pré-definidas ──
 const suggestions = [
-  { name: 'Alimentação',    type: 'expense', color: '#e07b54', icon: '🛒' },
-  { name: 'Transporte',     type: 'expense', color: '#5b8dd9', icon: '🚗' },
-  { name: 'Saúde',          type: 'expense', color: '#4caf7d', icon: '🏥' },
-  { name: 'Educação',       type: 'expense', color: '#9b6dcc', icon: '📚' },
-  { name: 'Lazer',          type: 'expense', color: '#f0b429', icon: '🎉' },
-  { name: 'Moradia',        type: 'expense', color: '#e05c5c', icon: '🏠' },
-  { name: 'Vestuário',      type: 'expense', color: '#e8a0bf', icon: '👗' },
-  { name: 'Assinaturas',    type: 'expense', color: '#4db8b8', icon: '📱' },
-  { name: 'Salário',        type: 'income',  color: '#4caf7d', icon: '💼' },
-  { name: 'Renda extra',    type: 'income',  color: '#f0b429', icon: '💰' },
+  { name: 'Alimentação', type: 'expense', nature: 'variable', color: '#e07b54', icon: '🛒' },
+  { name: 'Transporte',  type: 'expense', nature: 'variable', color: '#5b8dd9', icon: '🚗' },
+  { name: 'Saúde',       type: 'expense', nature: 'variable', color: '#4caf7d', icon: '🏥' },
+  { name: 'Educação',    type: 'expense', nature: 'fixed',    color: '#9b6dcc', icon: '📚' },
+  { name: 'Lazer',       type: 'expense', nature: 'variable', color: '#f0b429', icon: '🎉' },
+  { name: 'Moradia',     type: 'expense', nature: 'fixed',    color: '#e05c5c', icon: '🏠' },
+  { name: 'Vestuário',   type: 'expense', nature: 'variable', color: '#e8a0bf', icon: '👗' },
+  { name: 'Assinaturas', type: 'expense', nature: 'fixed',    color: '#4db8b8', icon: '📱' },
+  { name: 'Salário',     type: 'income',  nature: 'fixed',    color: '#4caf7d', icon: '💼' },
+  { name: 'Renda extra', type: 'income',  nature: 'variable', color: '#f0b429', icon: '💰' },
 ];
 
 // ── Função: renderizar sugestões ──
@@ -241,11 +241,16 @@ function renderSuggestions() {
 
   suggestions.forEach((cat, index) => {
     const chip = document.createElement('button');
-    chip.type = 'button';
-    chip.classList.add('category-chip');
-    chip.dataset.index = index;
-    chip.innerHTML = `<span>${cat.icon}</span> ${cat.name}`;
-    chip.style.setProperty('--chip-color', cat.color);
+          chip.type = 'button';
+          chip.classList.add('category-chip');
+          chip.dataset.index = index;
+    const natureLabel = cat.nature === 'fixed' ? 'Fixa' : 'Variável';
+          chip.innerHTML = `
+          <span>${cat.icon}</span>
+          ${cat.name}
+          <small>${natureLabel}</small>
+        `;
+          chip.style.setProperty('--chip-color', cat.color);
 
     chip.addEventListener('click', () => toggleSuggestion(index, chip, cat));
     suggestedCategories.appendChild(chip);
@@ -291,9 +296,10 @@ function renderSelectedCategories() {
 
 // ── Função: adicionar categoria personalizada ──
 function saveCustomCategory() {
-  const name  = document.getElementById('customCategoryName').value.trim();
-  const type  = document.getElementById('customCategoryType').value;
-  const color = document.getElementById('customCategoryColor').value;
+  const name   = document.getElementById('customCategoryName').value.trim();
+  const type   = document.getElementById('customCategoryType').value;
+  const nature = document.getElementById('customCategoryNature').value;
+  const color  = document.getElementById('customCategoryColor').value;
 
   if (!name) {
     document.getElementById('errorStep2').textContent = 'Informe o nome da categoria.';
@@ -309,7 +315,7 @@ function saveCustomCategory() {
   }
 
   document.getElementById('errorStep2').classList.remove('show');
-  state.categories.push({ name, type, color, icon: '📌', custom: true });
+  state.categories.push({ name, type, nature, color, icon: '📌', custom: true });
 
   // Limpa o formulário
   document.getElementById('customCategoryName').value = '';

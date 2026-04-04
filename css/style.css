@@ -807,3 +807,13 @@ body {
   height: auto;
   align-self: stretch;
 }
+
+/* ── NATUREZA DA CATEGORIA NO CHIP ── */
+.category-chip small {
+  font-size: .7rem;
+  background: rgba(0,0,0,.06);
+  padding: .15rem .4rem;
+  border-radius: 99px;
+  margin-left: .25rem;
+  color: inherit;
+}

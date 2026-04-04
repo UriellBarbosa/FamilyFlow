@@ -75,15 +75,19 @@
         <button class="btn-secondary" id="btnAddCategory" type="button">+ Criar categoria personalizada</button>
 
           <div id="customCategoryForm" class="hidden">
-          <div class="custom-category-inputs">
-            <input type="text" id="customCategoryName" placeholder="Nome da categoria" />
-              <select id="customCategoryType">
-                <option value="expense">Saída</option>
-                <option value="income">Entrada</option>
-              </select>
+            <div class="custom-category-inputs">
+              <input type="text" id="customCategoryName" placeholder="Nome da categoria" />
+                <select id="customCategoryType">
+                  <option value="expense">Saída</option>
+                  <option value="income">Entrada</option>
+                </select>
+                <select id="customCategoryNature">
+                  <option value="variable">Variável</option>
+                  <option value="fixed">Fixa</option>
+                </select>
               <input type="color" id="customCategoryColor" value="#2d4a3e" />
-              <button class="btn-secondary" id="btnSaveCategory" type="button">Adicionar</button>
-              <button class="btn-cancel-category" id="btnCancelCategory" type="button">✕</button>
+                <button class="btn-secondary" id="btnSaveCategory" type="button">Adicionar</button>
+                <button class="btn-cancel-category" id="btnCancelCategory" type="button">✕</button>
             </div>
           </div>
         </div>
