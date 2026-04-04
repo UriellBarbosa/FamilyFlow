@@ -50,24 +50,21 @@ btnLogin.addEventListener('click', async () => {
 
     if (error) throw error;
 
-    const { data: profile } = await supabase
-  .from('profiles')
-  .select('onboarding_step')
-  .eq('id', data.user.id)
-  .single();
+    const { data: onboardingStep } = await supabase
+        .rpc('get_my_onboarding_step');
 
-    if (!profile || profile.onboarding_step < 4) {
-     window.location.href = 'onboarding.html';
-    } else {
-     window.location.href = 'dashboard.html';
-    }
+    if (onboardingStep === null || onboardingStep < 4) {
+        window.location.href = 'onboarding.html';
+        } else {
+        window.location.href = 'dashboard.html';
+        }
 
     } catch (error) {
-    showError('E-mail ou senha incorretos. Tente novamente.');
-    } finally {
-    btnLogin.disabled = false;
-    btnLogin.textContent = 'Entrar';
-    }
+        showError('E-mail ou senha incorretos. Tente novamente.');
+        } finally {
+        btnLogin.disabled = false;
+        btnLogin.textContent = 'Entrar';
+        }
 });
 
 // ------- EVENTO: TECLA ENTER ACIONA O LOGIN -------

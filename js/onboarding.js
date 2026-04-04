@@ -387,18 +387,15 @@ async function generateInviteLink() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('family_id')
-    .eq('id', session.user.id)
-    .single();
+  const { data: familyId, error: familyError } = await supabase
+    .rpc('get_my_family_id');
 
-  if (!profile) return;
+  if (familyError || !familyId) return;
 
   // ----------- Cria o convite no banco -----------
   const { data: invite, error } = await supabase
     .from('invites')
-    .insert({ family_id: profile.family_id })
+    .insert({ family_id: familyId })
     .select()
     .single();
 
@@ -432,15 +429,12 @@ document.getElementById('btnSendInvite').addEventListener('click', async () => {
   errorEl.classList.remove('show');
 
   const { data: { session } } = await supabase.auth.getSession();
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('family_id')
-    .eq('id', session.user.id)
-    .single();
+  const { data: familyId } = await supabase
+    .rpc('get_my_family_id');
 
   const { error } = await supabase
     .from('invites')
-    .insert({ family_id: profile.family_id, email });
+    .insert({ family_id: familyId, email });
 
   if (error) {
     errorEl.textContent = 'Erro ao enviar convite. Tente novamente.';
