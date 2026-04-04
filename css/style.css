@@ -619,7 +619,14 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: .5rem;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #ede8e0;
+  min-height: 0;
+}
+
+.selected-categories:empty {
+  display: none;
 }
 
 /* ----------------- OPÇÕES DE CONVITE ----------- */
