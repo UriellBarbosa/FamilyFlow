@@ -581,19 +581,17 @@ async function saveOnboarding() {
 
     // 1. Salva as categorias personalizadas (as pré-definidas já existem no banco, então só precisamos salvar as customizadas)
     if (state.categories.length > 0) {
-      const categoriesToInsert = state.categories.map(cat => ({
-        family_id: familyId,
-        name:      cat.name,
-        type:      cat.type,
-        nature:    cat.nature,
-        color:     cat.color
-      }));
+    const categoriesToInsert = state.categories.map(cat => ({
+      name:   cat.name,
+      type:   cat.type,
+      nature: cat.nature,
+      color:  cat.color
+    }));
 
-      const { error: catError } = await supabase
-        .from('categories')
-        .insert(categoriesToInsert);
+    const { error: catError } = await supabase
+      .rpc('save_categories', { p_categories: categoriesToInsert });
 
-      if (catError) throw catError;
+    if (catError) throw catError;
     }
 
     // 2. Salva a renda no perfil do usuário (usamos o campo onboarding_data para armazenar temporariamente os dados do onboarding, que serão migrados para as tabelas definitivas no backend)
@@ -603,15 +601,13 @@ async function saveOnboarding() {
 
     // 3. Marca o onboarding como concluído atualizando o campo onboarding_step para 4 (que indica que o usuário completou todos os passos)
     const { error: profileError } = await supabase
-      .from('profiles')
-      .update({ onboarding_step: 4 })
-      .eq('id', userId);
+      .rpc('complete_onboarding');
 
     if (profileError) throw profileError;
 
     window.location.href = 'dashboard.html';
 
-  } catch (error) {
+    } catch (error) {
     console.error(error);
     btnNext.textContent = 'Ir para o dashboard';
     btnNext.disabled = false;
