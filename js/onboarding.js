@@ -1,6 +1,6 @@
 import { supabase } from './supabase.js';
 
-// ── Proteção de rota ──
+// ----------- Proteção de rota -----------
 async function checkAuth() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) window.location.href = 'index.html';
@@ -8,7 +8,7 @@ async function checkAuth() {
 
 checkAuth();
 
-// ── Estado global do onboarding ──
+// ----------- Estado global do onboarding ----------
 const state = {
   currentStep: 1,
   totalSteps: 4,
@@ -21,35 +21,35 @@ const state = {
   members: []         // [{ name, email, method }]
 };
 
-// ── Seleção de elementos ──
+// ---------- Seleção de elementos ----------
 const progressFill  = document.getElementById('progressFill');
 const progressLabel = document.getElementById('progressLabel');
 const btnNext       = document.getElementById('btnNext');
 const btnBack       = document.getElementById('btnBack');
 
-// ── Função: atualizar barra de progresso ──
+// ---------- Função: atualizar barra de progresso ----------
 function updateProgress() {
   const percent = (state.currentStep / state.totalSteps) * 100;
   progressFill.style.width = percent + '%';
   progressLabel.textContent = `Passo ${state.currentStep} de ${state.totalSteps}`;
 }
 
-// ── Função: navegar entre passos ──
+// ------------ Função: navegar entre passos ---------
 function goToStep(step) {
   document.getElementById(`step${state.currentStep}`).classList.add('hidden');
   state.currentStep = step;
   document.getElementById(`step${state.currentStep}`).classList.remove('hidden');
   updateProgress();
 
-  // Esconde o botão Voltar no primeiro passo
   btnBack.style.visibility = state.currentStep === 1 ? 'hidden' : 'visible';
-
-  // Muda o texto do botão no último passo
   btnNext.textContent = state.currentStep === state.totalSteps ? 'Ir para o dashboard' : 'Continuar';
+
+  // --------- Renderiza o resumo ao chegar no passo 4 ---------
+  if (state.currentStep === state.totalSteps) renderSummary();
 }
 
-// ── Eventos de navegação ──
-btnNext.addEventListener('click', () => {
+// ---------- Eventos de navegação entre passos ---------
+btnNext.addEventListener('click', async () => {
   if (state.currentStep === 1 && !validateStep1()) return;
   if (state.currentStep === 2 && !validateStep2()) return;
   if (state.currentStep === 3 && !validateStep3()) return;
@@ -57,15 +57,11 @@ btnNext.addEventListener('click', () => {
   if (state.currentStep < state.totalSteps) {
     goToStep(state.currentStep + 1);
   } else {
-    window.location.href = 'dashboard.html';
+    await saveOnboarding();
   }
 });
 
-btnBack.addEventListener('click', () => {
-  if (state.currentStep > 1) goToStep(state.currentStep - 1);
-});
-
-// ── Inicialização ──
+// --------- Inicialização do onboarding ---------
 updateProgress();
 btnBack.style.visibility = 'hidden';
 
@@ -517,4 +513,104 @@ optInviteManual.addEventListener('click', () => {
 // ----------------- Validação do passo 3 (opcional — pode pular) -----------------
 function validateStep3() {
   return true;
+}
+
+// ══════════════════════════════════════
+// PASSO 4 — TUDO PRONTO
+// ══════════════════════════════════════
+
+// --------- Função: montar resumo do onboarding -----------
+function renderSummary() {
+  const summary = document.getElementById('onboardingSummary');
+  summary.innerHTML = '';
+
+  // --------- Resumo da renda ---------
+  let incomeValue = '';
+  if (state.income.type === 'single') {
+    incomeValue = `R$ ${state.income.single.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+  } else {
+    const total = state.income.multiple.reduce((sum, i) => sum + (i.amount || 0), 0);
+    incomeValue = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} — ${state.income.multiple.length} pessoa(s)`;
+  }
+
+  // --------- Resumo das categorias ---------
+  const totalCats   = state.categories.length;
+  const fixedCats   = state.categories.filter(c => c.nature === 'fixed').length;
+  const varCats     = state.categories.filter(c => c.nature === 'variable').length;
+  const catsValue   = `${totalCats} categoria(s) — ${fixedCats} fixa(s), ${varCats} variável(is)`;
+
+  // --------- Resumo dos integrantes ---------
+  const totalMembers = state.members.length;
+  const membersValue = totalMembers > 0
+    ? `${totalMembers} integrante(s) adicionado(s)`
+    : 'Nenhum integrante adicionado ainda';
+
+  const items = [
+    { icon: '💰', label: 'Renda familiar',  value: incomeValue   },
+    { icon: '🗂️', label: 'Categorias',      value: catsValue     },
+    { icon: '👨‍👩‍👧‍👦', label: 'Integrantes',    value: membersValue  },
+  ];
+
+  items.forEach(item => {
+    const el = document.createElement('div');
+    el.classList.add('summary-item');
+    el.innerHTML = `
+      <div class="summary-icon">${item.icon}</div>
+      <div>
+        <div class="summary-label">${item.label}</div>
+        <div class="summary-value">${item.value}</div>
+      </div>
+    `;
+    summary.appendChild(el);
+  });
+}
+
+// ----------- Função: salvar onboarding no banco e redirecionar para dashboard -----------
+async function saveOnboarding() {
+  btnNext.disabled = true;
+  btnNext.textContent = 'Salvando...';
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const userId = session.user.id;
+
+    const { data: familyId } = await supabase.rpc('get_my_family_id');
+
+    // 1. Salva as categorias personalizadas (as pré-definidas já existem no banco, então só precisamos salvar as customizadas)
+    if (state.categories.length > 0) {
+      const categoriesToInsert = state.categories.map(cat => ({
+        family_id: familyId,
+        name:      cat.name,
+        type:      cat.type,
+        nature:    cat.nature,
+        color:     cat.color
+      }));
+
+      const { error: catError } = await supabase
+        .from('categories')
+        .insert(categoriesToInsert);
+
+      if (catError) throw catError;
+    }
+
+    // 2. Salva a renda no perfil do usuário (usamos o campo onboarding_data para armazenar temporariamente os dados do onboarding, que serão migrados para as tabelas definitivas no backend)
+    const incomeData = state.income.type === 'single'
+      ? { income_type: 'single', income_total: state.income.single }
+      : { income_type: 'multiple', income_total: state.income.multiple.reduce((s, i) => s + i.amount, 0) };
+
+    // 3. Marca o onboarding como concluído atualizando o campo onboarding_step para 4 (que indica que o usuário completou todos os passos)
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({ onboarding_step: 4 })
+      .eq('id', userId);
+
+    if (profileError) throw profileError;
+
+    window.location.href = 'dashboard.html';
+
+  } catch (error) {
+    console.error(error);
+    btnNext.textContent = 'Ir para o dashboard';
+    btnNext.disabled = false;
+  }
 }
