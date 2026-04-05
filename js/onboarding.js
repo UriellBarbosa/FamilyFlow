@@ -442,6 +442,10 @@ document.getElementById('btnSendInvite').addEventListener('click', async () => {
 
 // ----------------- Função: cadastrar manualmente -----------------
 document.getElementById('btnSaveManual').addEventListener('click', () => {
+  console.log('manualName:', document.getElementById('manualName'));
+  console.log('manualEmail:', document.getElementById('manualEmail'));
+  console.log('manualIsAdmin:', document.getElementById('manualIsAdmin'));
+  console.log('errorStep3:', document.getElementById('errorStep3'));
   const name    = document.getElementById('manualName').value.trim();
   const email   = document.getElementById('manualEmail').value.trim();
   const isAdmin = document.getElementById('manualIsAdmin').checked;
@@ -593,9 +597,9 @@ async function saveOnboarding() {
     }
 
     // 2. Salva a renda no perfil do usuário (usamos o campo onboarding_data para armazenar temporariamente os dados do onboarding, que serão migrados para as tabelas definitivas no backend)
-    const incomeData = state.income.type === 'single'
+    /*const incomeData = state.income.type === 'single'
       ? { income_type: 'single', income_total: state.income.single }
-      : { income_type: 'multiple', income_total: state.income.multiple.reduce((s, i) => s + i.amount, 0) };
+      : { income_type: 'multiple', income_total: state.income.multiple.reduce((s, i) => s + i.amount, 0) };*/
 
     // 3. Marca o onboarding como concluído atualizando o campo onboarding_step para 4 (que indica que o usuário completou todos os passos)
     const { error: profileError } = await supabase
