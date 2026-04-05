@@ -49,6 +49,10 @@ function goToStep(step) {
 }
 
 // ---------- Eventos de navegação entre passos ---------
+btnBack.addEventListener('click', () => {
+  if (state.currentStep > 1) goToStep(state.currentStep - 1);
+});
+
 btnNext.addEventListener('click', async () => {
   if (state.currentStep === 1 && !validateStep1()) return;
   if (state.currentStep === 2 && !validateStep2()) return;
