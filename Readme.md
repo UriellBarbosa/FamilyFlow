@@ -105,7 +105,7 @@ FASE 1 — MVP
 [✅] Onboarding — Passo 1: Renda familiar
 [✅] Onboarding — Passo 2: Categorias (sugestões + personalizadas)
 [✅] Onboarding — Passo 3: Integrantes (link, e-mail ou manual)
-[] Onboarding — Passo 4: Tudo pronto 🎉
+[✅] Onboarding — Passo 4: Tudo pronto 🎉
 [] Categorias dinâmicas por família
 [] Cadastro de transações
 [] Gestão de integrantes (promover membro a admin / rebaixar admin a membro)
