@@ -422,7 +422,7 @@ document.getElementById('btnSendInvite').addEventListener('click', async () => {
 
   errorEl.classList.remove('show');
 
-  const { data: token, error } = await supabase
+  const { error } = await supabase
     .rpc('create_invite', { p_email: email });
 
   if (error) {
