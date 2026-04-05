@@ -217,7 +217,6 @@ function validateStep1() {
 // ══════════════════════════════════════
 
 const suggestedCategories = document.getElementById('suggestedCategories');
-const selectedCategories  = document.getElementById('selectedCategories');
 const btnAddCategory      = document.getElementById('btnAddCategory');
 const customCategoryForm  = document.getElementById('customCategoryForm');
 const btnSaveCategory     = document.getElementById('btnSaveCategory');
@@ -253,13 +252,13 @@ function renderSuggestions() {
         `;
           chip.style.setProperty('--chip-color', cat.color);
 
-    chip.addEventListener('click', () => toggleSuggestion(index, chip, cat));
+    chip.addEventListener('click', () => toggleSuggestion(chip, cat));
     suggestedCategories.appendChild(chip);
   });
 }
 
 // ---------------- Função: selecionar/deselecionar sugestão ----------------
-function toggleSuggestion(index, chip, cat) {
+function toggleSuggestion(chip, cat) {
   const exists = state.categories.findIndex(c => c.name === cat.name);
 
   if (exists >= 0) {
