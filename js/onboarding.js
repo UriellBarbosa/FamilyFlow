@@ -410,23 +410,19 @@ document.getElementById('btnCopyLink').addEventListener('click', () => {
 
 // ----------------- Função: enviar convite por e-mail -----------------
 document.getElementById('btnSendInvite').addEventListener('click', async () => {
-const name    = document.getElementById('inviteEmailName').value.trim();
-const email   = document.getElementById('inviteEmail').value.trim();
-const errorEl = document.getElementById('errorStep3');
+  const name    = document.getElementById('inviteEmailName').value.trim();
+  const email   = document.getElementById('inviteEmail').value.trim();
+  const errorEl = document.getElementById('errorStep3');
 
-if (!name || !email) {
-  errorEl.textContent = 'Preencha nome e e-mail do integrante.';
-  errorEl.classList.add('show');
-  return;
-}
+  if (!name || !email) {
+    errorEl.textContent = 'Preencha nome e e-mail do integrante.';
+    errorEl.classList.add('show');
+    return;
+  }
 
   errorEl.classList.remove('show');
 
-  const { data: { session } } = await supabase.auth.getSession();
-  const { data: familyId } = await supabase
-    .rpc('get_my_family_id');
-
-  const { error } = await supabase
+  const { data: token, error } = await supabase
     .rpc('create_invite', { p_email: email });
 
   if (error) {
@@ -435,18 +431,18 @@ if (!name || !email) {
     return;
   }
 
-state.members.push({ name, email, method: 'email' });
-document.getElementById('inviteEmailName').value = '';
-document.getElementById('inviteEmail').value = '';
+  state.members.push({ name, email, role: 'member', method: 'email' });
+  document.getElementById('inviteEmailName').value = '';
+  document.getElementById('inviteEmail').value = '';
   renderMembersList();
 });
 
 // ----------------- Função: cadastrar manualmente -----------------
 document.getElementById('btnSaveManual').addEventListener('click', () => {
   const name    = document.getElementById('manualName').value.trim();
-const email   = document.getElementById('manualEmail').value.trim();
-const isAdmin = document.getElementById('manualIsAdmin').checked;
-const errorEl = document.getElementById('errorStep3');
+  const email   = document.getElementById('manualEmail').value.trim();
+  const isAdmin = document.getElementById('manualIsAdmin').checked;
+  const errorEl = document.getElementById('errorStep3');
 
 if (!name || !email) {
   errorEl.textContent = 'Preencha nome e e-mail do integrante.';
